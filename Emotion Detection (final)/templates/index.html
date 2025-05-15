@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emotion Prediction</title>
+        <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-top: 30px;
+        }
+        input[type="file"] {
+            padding: 10px;
+            margin-top: 20px;
+            margin-right: 20px;
+            background-color: #831200;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 30px;
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h2>Upload an Audio File for Emotion Prediction</h2>
+    <form method="post" enctype="multipart/form-data">
+        <input type="file" name="audio" required>
+        <button type="submit">Predict</button>
+    </form>
+    
+    {% if prediction %}
+        <h3>Predicted Emotion: {{ prediction }}</h3>
+    {% endif %}
+</body>
+</html>
