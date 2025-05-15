@@ -2,57 +2,55 @@
 <html>
 <head>
     <title>Emotion Prediction</title>
-        <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-        }
-        h1 {
-            color: #333;
-        }
-        form {
-            margin-top: 30px;
-        }
-        input[type="file"] {
-            padding: 10px;
-            margin-top: 20px;
-            margin-right: 20px;
-            background-color: #831200;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        button {
-            padding: 10px 20px;
-            margin-top: 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-        .result {
-            margin-top: 30px;
-            font-size: 20px;
-            color: #333;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
 </head>
 <body>
-    <h2>Upload an Audio File for Emotion Prediction</h2>
-    <form method="post" enctype="multipart/form-data">
-        <input type="file" name="audio" required>
-        <button type="submit">Predict</button>
-    </form>
+    <h1>Emotion Detection System</h1>
     
-    {% if prediction %}
-        <h3>Predicted Emotion: {{ prediction }}</h3>
-    {% endif %}
+    <div class="container">
+        <div class="section" id="uploadSection">
+            <h3>Upload Audio File</h3>
+            <form id="uploadForm" method="post" enctype="multipart/form-data" action="/">
+                <label for="audioFile" class="file-input-label">Choose File</label>
+                <input type="file" id="audioFile" name="audio" accept="audio/*" required>
+                <div id="selectedFileName"></div>
+                <div class="controls">
+                    <button id="uploadPlayButton" class="play" disabled type="button">Play</button>
+                    <button id="uploadPredictButton" class="predict" type="submit">Predict</button>
+                </div>
+            </form>
+            <audio id="uploadAudioPlayback" controls class="hidden"></audio>
+        </div>
+        
+        {% if prediction %}
+        <div class="section result">
+            <h3>Predicted Emotion: {{ prediction }}</h3>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Upload functionality
+        const audioFileInput = document.getElementById('audioFile');
+        let uploadedFile = null;
+        
+        audioFileInput.addEventListener('change', (event) => {
+            uploadedFile = event.target.files[0];
+            if (uploadedFile) {
+                document.getElementById('selectedFileName').textContent = uploadedFile.name;
+                document.getElementById('uploadPlayButton').disabled = false;
+                
+                const audioUrl = URL.createObjectURL(uploadedFile);
+                const audio = document.getElementById('uploadAudioPlayback');
+                audio.src = audioUrl;
+                audio.classList.remove('hidden');
+            }
+        });
+        
+        document.getElementById('uploadPlayButton').addEventListener('click', () => {
+            const audio = document.getElementById('uploadAudioPlayback');
+            audio.play();
+        });
+    </script>
 </body>
 </html>
